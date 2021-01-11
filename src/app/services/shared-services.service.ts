@@ -8,9 +8,12 @@ import { environment } from 'src/environments/environment'
 export class ServicesService {
   private valuesUrl = environment.apiUrl;
   private headers: HttpHeaders;
+  private token = localStorage.getItem('token');
 
   constructor(private http: HttpClient) {
-    this.headers = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
+    this.headers = new HttpHeaders()
+    .set('Authorization', 'bearer ' + this.token)
+    .set('Content-Type', 'application/json');
   }
 
   login(loginData:any){
@@ -18,4 +21,13 @@ export class ServicesService {
     apiUrl = this.valuesUrl + "api/Auth/Login";
     return this.http.post(apiUrl, loginData, { headers: this.headers });
   }
+
+  getEmployees(){
+    let apiUrl: string;
+    apiUrl = this.valuesUrl + "api/Employee";
+    console.log("token: ",this.token)
+    console.log("header: ",this.headers)
+    return this.http.get(apiUrl, { headers: this.headers });
+  }
+
 }
