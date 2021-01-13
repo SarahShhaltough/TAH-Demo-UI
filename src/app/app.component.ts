@@ -6,5 +6,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'TAH-Demo-UI';
+  title = 'TAH Demo';
+  isLoggedin =  localStorage.getItem('isLoggedin') == 'true';
+  
+  logout(){
+    this.isLoggedin =  localStorage.getItem('isLoggedin') == 'true';
+    localStorage.clear();
+  }
 }

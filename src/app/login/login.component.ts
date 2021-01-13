@@ -26,10 +26,6 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  logout(): void {
-    localStorage.clear();
-    this.router.navigate(['/login']);
-  }
 
   onSubmit() {
     console.log("on submit");

@@ -25,9 +25,54 @@ export class ServicesService {
   getEmployees(){
     let apiUrl: string;
     apiUrl = this.valuesUrl + "api/Employee";
-    console.log("token: ",this.token)
-    console.log("header: ",this.headers)
     return this.http.get(apiUrl, { headers: this.headers });
   }
 
+  addEmployee(body:any){
+    let apiUrl: string;
+    apiUrl = this.valuesUrl + "api/Employee";
+    return this.http.post(apiUrl, body, { headers: this.headers });
+  }
+
+  removeEmployee(id:any){
+    let apiUrl: string;
+    apiUrl = this.valuesUrl + "api/Employee/" + id;
+    return this.http.delete(apiUrl, { headers: this.headers });
+  }
+
+  editEmployee(id:any,body:any){
+    let apiUrl: string;
+    apiUrl = this.valuesUrl + "api/Employee/" + id;
+    return this.http.put(apiUrl, body, { headers: this.headers });
+  }
+
+  getProjects(){
+    let apiUrl: string;
+    apiUrl = this.valuesUrl + "api/Project";
+    return this.http.get(apiUrl, { headers: this.headers });
+  }
+
+  addProject(body:any) {
+    let apiUrl: string;
+    apiUrl = this.valuesUrl + "api/Project";
+    return this.http.post(apiUrl, body, { headers: this.headers });
+  }
+
+  removeProject(id:any){
+    let apiUrl: string;
+    apiUrl = this.valuesUrl + "api/Project/" + id;
+    return this.http.delete(apiUrl, { headers: this.headers });
+  }
+
+  editProject(id:any,body:any){
+    let apiUrl: string;
+    apiUrl = this.valuesUrl + "api/Project/" + id;
+    return this.http.put(apiUrl, body, { headers: this.headers });
+  }
+
+  getProjectEmployees(id:any){
+    let apiUrl: string;
+    apiUrl = this.valuesUrl + "api/ProjectAssignment/"+ id;
+    return this.http.get(apiUrl, { headers: this.headers });
+  }
 }

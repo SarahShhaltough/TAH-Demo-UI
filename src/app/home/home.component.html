@@ -1,29 +1,154 @@
-<mat-card class="box">
-<table mat-table [dataSource]="ELEMENT_DATA" class="mat-elevation-z8">
+<p-toast></p-toast>
+<div class="tab-view">
+    <p-tabView>
+        <p-tabPanel header="Employees">
+            <mat-card class="main-card" fxFlex="100%" fxLayoutGap="10px">
+                
+            <div fxFlex="100%" fxLayout="row wrap">
+            
+            <p-table #dt [columns]="pDisplayedColumns" [value]="dataSource"
+                [reorderableColumns]="true" [paginator]="true"  [rows]="10"
+                pageLinkSize="3" [rowsPerPageOptions]="[5,10,15,20,25]" [paginatorDropdownAppendTo]="'body'" dataKey="employeeId"
+                [resetPageOnSort]=false [responsive]="true"  selectionMode="multiple" editMode="row" >
+            
+                <ng-template pTemplate="caption">
+                    <div>
+                      <button type="button" pButton icon="fa fa-file" iconPos="left" label="Export data"
+                        (click)="dt.exportCSV()" style="float:left"></button>
+                        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="openNew()"></button>
+                      <i class="fa fa-search" style="margin:4px 4px 4px 4px ;float:right"></i>
+                      <input type="text" pInputText size="40" placeholder="Search"
+                        (input)="dt.filterGlobal($event.target.value, 'contains')" style="float:right; width:auto">
+                    </div>
+                </ng-template>
+            
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th *ngFor="let col of columns" style="width:14em">
+                            {{col.header}}
+                        </th>
+                        <th></th>
+            
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <tr>
+                        <td *ngFor="let col of columns">
+                            {{rowData[col.field]}}
+                        </td>
+                        <td>
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="editEmployee(rowData)"></button>
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="removeEmployee(rowData)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            </div>
+            </mat-card>
+        </p-tabPanel>
+        <p-tabPanel header="Projects">
+            <mat-card class="main-card" fxFlex="100%" fxLayoutGap="10px">
+               
+                <div fxFlex="100%" fxLayout="row wrap">
+            
+            <p-table #pdt [columns]="projectDisplayedColumns" [value]="projectDataSource"
+                [reorderableColumns]="true" [paginator]="true"  [rows]="10"
+                pageLinkSize="3" [rowsPerPageOptions]="[5,10,15,20,25]" [paginatorDropdownAppendTo]="'body'" dataKey="projectId"
+                [resetPageOnSort]=false [responsive]="true"  selectionMode="multiple" editMode="row" >
+            
+                <ng-template pTemplate="caption">
+                    <div>
+                      <button type="button" pButton icon="fa fa-file" iconPos="left" label="Export data"
+                        (click)="pdt.exportCSV()" style="float:left"></button>
+                        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="openNewProject()"></button>
+                      <i class="fa fa-search" style="margin:4px 4px 4px 4px ;float:right"></i>
+                      <input type="text" pInputText size="40" placeholder="Search"
+                        (input)="pdt.filterGlobal($event.target.value, 'contains')" style="float:right; width:auto">
+                    </div>
+                </ng-template>
+            
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th *ngFor="let col of columns" style="width:14em">
+                            {{col.header}}
+                        </th>
+                        <th></th>
+            
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <tr>
+                        
+                        <td *ngFor="let col of columns">
+                            {{rowData[col.field]}}
+                        </td>
+                        <td>
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="editProject(rowData)"></button>
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="removeProject(rowData)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            </div>
+            </mat-card>
+        </p-tabPanel>
+        <p-tabPanel header="Project Assignment">
+            
+            <p-dropdown [options]="projectDataSource" [(ngModel)]="selectedProject" optionLabel="projectName" [filter]="true" filterBy="projectName"
+                [showClear]="true" placeholder="Select a project" (onChange)="getProjectEmployees()">
+                <ng-template pTemplate="selectedItem">
+                    <div *ngIf="selectedProject">
+                        <div>{{selectedProject.projectName}}</div>
+                    </div>
+                </ng-template>
+                <ng-template let-project pTemplate="item">
+                    <div >
+                        <div>{{project.projectName}}</div>
+                    </div>
+                </ng-template>
+            </p-dropdown>
 
-    <!--- Note that these columns can be defined in any order.
-          The actual rendered columns are set as a property on the row definition" -->
-  
-    <!-- Position Column -->
-    <ng-container matColumnDef="employeeId">
-      <th mat-header-cell *matHeaderCellDef> ID </th>
-      <td mat-cell *matCellDef="let element"> {{element.position}} </td>
-    </ng-container>
-  
-    <!-- Name Column -->
-    <ng-container matColumnDef="employeeName">
-      <th mat-header-cell *matHeaderCellDef> Name </th>
-      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-    </ng-container>
-  
-    <!-- Weight Column -->
-    <ng-container matColumnDef="employeeEmail">
-      <th mat-header-cell *matHeaderCellDef> Email </th>
-      <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
-    </ng-container>
-  
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-{{ELEMENT_DATA}}
-</mat-card>
+        </p-tabPanel>
+    </p-tabView>
+</div>
+
+<p-dialog [(visible)]="employeeDialog" [style]="{width: '450px'}" header="Employee Details" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field">
+            <label for="employeeName">Name</label>
+            <input type="text" pInputText id="employeeName" [(ngModel)]="employeeName" required autofocus />
+            <small class="p-invalid" *ngIf="submitted && !employeeName">Name is required.</small>
+        </div>
+        <div class="p-field">
+            <label for="employeeEmail">Email</label>
+            <input type="text" pInputText  id="employeeEmail" [(ngModel)]="employeeEmail" required rows="3" cols="20"/>
+            <small class="p-invalid" *ngIf="submitted && !employeeEmail">Email is required.</small>
+        </div>
+
+    </ng-template>
+    
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="addEditEmployee()"></button>
+    </ng-template>
+
+</p-dialog>
+
+
+<p-dialog [(visible)]="projectDialog" [style]="{width: '450px'}" header="Project Details" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field">
+            <label for="projectName">Name</label>
+            <input type="text" pInputText id="projectName" [(ngModel)]="projectName" required autofocus />
+            <small class="p-invalid" *ngIf="submitted && !projectName">Name is required.</small>
+        </div>
+        
+    </ng-template>
+    
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="addEditProject()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

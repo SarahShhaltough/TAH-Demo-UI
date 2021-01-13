@@ -2,9 +2,12 @@
   <div>
   <!--  <a href="https://www.positronx.io" target="_blank" class="positronx">PositronX.io</a> -->
   </div>
-  <span class="nav-tool-items">
+  <span *ngIf='!isLoggedin' class="nav-tool-items">
     <a mat-button routerLink="login" routerLinkActive="active">Login</a>
     <a mat-button mat-raised-button routerLink="register" routerLinkActive="active">Register</a>
+  </span>
+  <span *ngIf='isLoggedin' class="nav-tool-items">
+    <a mat-button routerLink="login" (click)="logout()" routerLinkActive="active">Logout</a>
   </span>
 </mat-toolbar>
 <router-outlet></router-outlet>
